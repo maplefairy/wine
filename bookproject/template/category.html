@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription %}
+    {% if category %}
+        {{ category.description|truncatewords:155 }}
+    {% else %}
+         Welcome to Bookvana store, the magic world of books...
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if category %}
+        {{ category.name }}-Bookvana Store
+    {% else %}
+        See our new collection of books-Bookvana
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if category %}
+        <div class="row my_row_class">
+            <div class="mx-auto">
+                <p><a href="{% url 'book:allbookscat' %}"> Book Collections</a></p>
+            </div>
+        </div>
+    {% endif %}
+    <div class="mx-auto">
+        {% if category %}
+            <img src="{{category.image.url}}" alt="{{category.name}}" class="my_image">
+
+    </div>
+        <br>
+    <div>
+            <h1 class="text-center my_title">{{category.name}}</h1>
+            <p class="text-justify">{{category.description}}</p>
+    </div>
+        {% else %}
+    <div>
+        <div>
+            <img class="my_image my_image_padding" src="{% static 'img/banner-b.png' %}" alt="Our Books">
+        </div>
+    </div>
+        <br>
+    <div>
+        <h1 class="text-center my_title"> Our Books Collection</h1>
+        <p class="text-justify"> Bookvana store has wide variety of collection of books with different generes and classsics.Get your desired books or collections at low cost.
+            Entertain your lazy hours and boost your knowledge with Bookvana books.The power to be found between the pages of a book is formidable, indeed. And these 80 inspiring quotes about books and importance of reading are here to remind you of that. From beloved bestsellers to iconic celebrities, these quotes exemplify the benefits of reading and of a good books to comfort, challenge, and inspire you. For, as author Anna Quindlen says, "Books are the plane, and the train, and the road. They are the destination, and the journey. They are home."
+            It is really hard to be lonely very long in a world of words. Even if you don't have friends somewhere, you still have language, and it will find you and wrap its little syllables around you and suddenly there will be a story to live in."Show me a family of readers, and I will show you the people who move the world." – Napoleon Bonaparte
+        </p>
+    </div>
+        {% endif %}
+    <div class="container">
+        <div class="row mx-auto">
+            {% for product in products.object_list %}
+                <div class="my_bottom_margin col-9 col-sm-12 col-md-4 xol-lg-4">
+                    <div class="card text-center" style="min-width : 18rem;">
+                        <a href="{{product.get_url}}"><img class="card-img-top" src="{{product.image.url}}" alt="{{product.name}}" height="380" width="250"></a>
+                    <div class="card-body">
+                            <h4>{{product.name}}</h4>
+                        <p><b>{{product.price}}/-</b></p><br>
+                    </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="mx-auto">
+            {% if products.paginator.num_pages > 1 %}
+            <hr>
+            <div class="text-center">
+                {% for pg in products.paginator.page_range %}
+                    <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <br>
+    </div>
+{% endblock %}
